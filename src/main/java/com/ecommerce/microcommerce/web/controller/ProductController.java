@@ -100,7 +100,7 @@ public class ProductController {
      * Calcule la marge de chaque produit (différence entre
      * prix d‘achat et prix de vente).
      *
-     * @return
+     * @return La liste des produits mise en forme
      */
     @GetMapping(value = "/AdminProduits")
     private ArrayList<String> calculerMargeProduit() {
@@ -112,6 +112,18 @@ public class ProductController {
             listProducts.add("Product" + product.toString() + marge);
         }
         return listProducts;
+    }
+
+    /**
+     * Retourne la liste de tous les produits
+     * triés par nom croissant
+     *
+     * @return La liste des produits trier par ordre alphabétique
+     */
+    @GetMapping(value = "/triProduits")
+    public List<Product> trierProduitsParOrdreAlphabetique() {
+        // Utilise la méthode présente dans l'interface ProductDao
+        return productDao.trierProduitsParOrdreAlphabetique();
     }
 
 }
