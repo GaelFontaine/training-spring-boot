@@ -2,6 +2,7 @@ package com.ecommerce.microcommerce.web.controller;
 
 import com.ecommerce.microcommerce.dao.ProductDao;
 import com.ecommerce.microcommerce.model.Product;
+import com.ecommerce.microcommerce.web.exceptions.ProduitGratuitException;
 import com.ecommerce.microcommerce.web.exceptions.ProduitIntrouvableException;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
@@ -53,6 +54,11 @@ public class ProductController {
         if (produit == null)
             throw new ProduitIntrouvableException("Le produit avec l'id " + id + " est INTROUVABLE. Écran Bleu si je pouvais.");
 
+        //On ajoute la vérification pour savoir si un produit n'est pas gratuit
+        if (produit.getPrixAchat() == 0){
+            throw new ProduitGratuitException("Le produit " + produit.getNom() + " avec l'id " + id + " est gratuit.");
+        }
+
         return produit;
     }
 
@@ -102,6 +108,7 @@ public class ProductController {
      *
      * @return La liste des produits mise en forme
      */
+    @ApiOperation(value = "Calcule la marge de chaque produit (différence entre prix d‘achat et prix de vente).")
     @GetMapping(value = "/AdminProduits")
     private ArrayList<String> calculerMargeProduit() {
         Iterable<Product> products = productDao.findAll();
@@ -120,6 +127,7 @@ public class ProductController {
      *
      * @return La liste des produits trier par ordre alphabétique
      */
+    @ApiOperation(value = "Retourne la liste de tous les produits triés par nom croissant")
     @GetMapping(value = "/triProduits")
     public List<Product> trierProduitsParOrdreAlphabetique() {
         // Utilise la méthode présente dans l'interface ProductDao
