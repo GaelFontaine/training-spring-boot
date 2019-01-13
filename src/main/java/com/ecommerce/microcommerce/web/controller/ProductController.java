@@ -128,7 +128,7 @@ public class ProductController {
      */
     @ApiOperation(value = "Calcule la marge de chaque produit (différence entre prix d‘achat et prix de vente).")
     @GetMapping(value = "/AdminProduits")
-    private ArrayList<String> calculerMargeProduit() {
+    public ArrayList<String> calculerMargeProduit() {
         Iterable<Product> products = productDao.findAll();
         // La liste de produits mis en forme
         ArrayList<String> listProducts = new ArrayList<>();
