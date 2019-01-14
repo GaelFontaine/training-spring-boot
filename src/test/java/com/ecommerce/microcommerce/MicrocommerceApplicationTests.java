@@ -4,7 +4,6 @@ import com.ecommerce.microcommerce.dao.ProductDao;
 import com.ecommerce.microcommerce.model.Product;
 import com.ecommerce.microcommerce.web.controller.ProductController;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
@@ -114,6 +112,22 @@ public class MicrocommerceApplicationTests {
 				.andExpect(status().isNotFound());
 	}
 
+	@Test
+	public void testTriProduct() throws Exception {
+		when(productDao.findAll()).thenReturn(listeProduct);
+		mockMvc.perform(get("/triProduits/")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void testMargeProduct() throws Exception {
+		when(productDao.findAll()).thenReturn(listeProduct);
+		mockMvc.perform(get("/AdminProduits/")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andReturn();
+	}
 
 	@Test
 	public void testAjouterProduct() throws Exception {
